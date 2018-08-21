@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <properties>
+        <!-- 文件输出格式%d{yyyy-MM-dd HH:mm:ss.SSS} -%-5level [%thread] %c [%L] - -->
+        <property name="PATTERN-CONSOLE">%d{yyyy-MM-dd HH:mm:ss.SSS} |-%-5level [%thread %T] %C{1}.%M:%L -| %msg%n</property>
+        <property name="PATTERN">%msg%n</property>
+        <property name="FILE_PATH">/log/highchart</property>
+    </properties>
+
+    <!-- 先定义所有的appender -->
+    <appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 这个都知道是输出日志的格式 -->
+            <PatternLayout pattern="${PATTERN-CONSOLE}"/>
+        </Console>
+
+        <RollingFile name="RollingFileAll" fileName="${FILE_PATH}/console.log"
+                     filePattern="${FILE_PATH}/console-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="${PATTERN}"/>
+            <SizeBasedTriggeringPolicy size="100MB"/>
+        </RollingFile>
+    </appenders>
+
+    <!--   然后定义logger，只有定义了logger并引入appender，appender才会生效 -->
+    <loggers>
+        <logger name="loggerConsole" level="INFO">
+            <appender-ref ref="RollingFileAll"/>
+        </logger>
+
+        <!--  root级别，打印所有日志 -->
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="RollingFileAll"/>
+        </root>
+    </loggers>
+
+
+</configuration>
