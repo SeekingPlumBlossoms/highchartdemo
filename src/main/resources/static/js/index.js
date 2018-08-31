@@ -5,6 +5,9 @@ var chart = Highcharts.chart('container', {
     title: {
         text: '用户分析'
     },
+    lang: {
+        noData: '暂无数据'
+    },
     subtitle: {
         text: '数据来源: MQ'
     },
@@ -43,22 +46,6 @@ var chart = Highcharts.chart('container', {
             }
         }
     }
-        //,{ // Tertiary yAxis
-        //gridLineWidth: 0,
-        // title: {
-        //     text: '取消关注人数',
-        //     style: {
-        //         color:  Highcharts.getOptions().colors[1]
-        //     }
-        // },
-    //     labels: {
-    //        // format: '{value}',
-    //         style: {
-    //             color:  Highcharts.getOptions().colors[1]
-    //         }
-    //     },
-    //     opposite: true
-    // }
         ],
     tooltip: {
         shared: true
@@ -74,7 +61,6 @@ var chart = Highcharts.chart('container', {
         name: '新关注人数',
         type: 'column',
         yAxis: 1,
-        data: [783387, 861003, 741612, 560220, 496171, 439833, 439681, 399307, 446633, 390851, 348967, 332215],
         tooltip: {
             valueSuffix: ''
         }
@@ -82,7 +68,6 @@ var chart = Highcharts.chart('container', {
         name: '取消关注人数',
         type: 'column',
         yAxis: 1,
-        data: [49231, 27877, 20568, 54626, 28349, 23158, 56025, 32668, 23878, 39513, 27439, 31429],
         tooltip: {
             valueSuffix: ''
         },
@@ -90,7 +75,6 @@ var chart = Highcharts.chart('container', {
     }, {
         name: '累计关注人数',
         type: 'spline',
-        data: [293186937,294020035,294740649,295246182,295713973,296130613,296514237,296880858,297303597,297654908,297976413,298277171],
         tooltip: {
             valueSuffix: ''
         },
@@ -98,9 +82,20 @@ var chart = Highcharts.chart('container', {
     }]
 });
 
-function shuXin() {
+$(function () {
+    $.get('/ind', function (result){
+        chart.xAxis[0].categories=['201901', '201902', '201903', '201904', '201905', '201906','201907', '201908', '201909', '201910', '201911', '201912'];
+        var inc=[783387, 861003, 741612, 560220, 496171, 439833, 439681, 399307, 446633, 390851, 348967, 332215];
+        var inc2=[49231, 27877, 20568, 54626, 28349, 23158, 56025, 32668, 23878, 39513, 27439, 31429];
+        var inc3=[293186937,294020035,294740649,295246182,295713973,296130613,296514237,296880858,297303597,297654908,297976413,298277171];
+        chart.series[0].setData(inc);
+        chart.series[1].setData(inc2);
+        chart.series[2].setData(inc3);
+    });
+})
 
-       // chart.xAxis[0].categories.push(['201901', '201902', '201903', '201904', '201905', '201906','201907', '201908', '201909', '201910', '201911', '201912']);
+function shuXin() {
+    // chart.xAxis[0].categories.push(['201901', '201902', '201903', '201904', '201905', '201906','201907', '201908', '201909', '201910', '201911', '201912']);
     chart.xAxis[0].categories=['201901', '201902', '201903', '201904', '201905', '201906','201907', '201908', '201909', '201910', '201911', '201912'];
     var inc=[783387, 861003, 741612, 560220, 496171, 439833, 439681, 399307, 446633, 390851, 348967, 332215];
     for(var i=0;i<inc.length;i++){
